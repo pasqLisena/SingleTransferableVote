@@ -1,0 +1,20 @@
+{
+  "name": "singletransferablevote",
+  "version": "1.0.0",
+  "description": "Starter JavaScript library scaffold for Single Transferable Vote experiments",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "stv",
+    "voting",
+    "library"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}
