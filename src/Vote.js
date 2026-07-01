@@ -1,3 +1,5 @@
+import STVote from './STVote.js';
+
 const DEFAULT = {
     TOKEN: 'Token',
     TIMESTAMP: 'timestamp',
@@ -67,12 +69,13 @@ export default class Vote {
                 .sort((left, right) => left.rank - right.rank)
                 .map((entry) => entry.option);
 
-            vote.addQuestionAnswer(questionText, orderedPreferences);
+            vote.addQuestionAnswer(questionText, STVote.fromPreferences(orderedPreferences));
         }
 
         return vote;
     }
 }
+
 
 function parseQuestion(question) {
     const stvMatch = question.match(STV_QUESTION_REGEX);

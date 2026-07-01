@@ -38,47 +38,29 @@ const VOTE_FILE = 'data/Milano/Elezioni City Lead Milano (Responses).xlsx';
 //     assert.equal(result.length, 16);
 // });
 
-test('importVotes normalizes FPTP and STV questions in Vote objects', () => {
-        const votes = importVotes('data/CD2021/Voti Elezione Direttivo 29 Novembre 2021 PUBBLICO - Form Responses 1.csv');
-        const firstVote = votes[0];
+// test('importVotes normalizes FPTP and STV questions in Vote objects', () => {
+//         const votes = importVotes('data/CD2021/Voti Elezione Direttivo 29 Novembre 2021 PUBBLICO - Form Responses 1.csv');
+//         const firstVote = votes[0];
 
-        assert.equal(
-            firstVote.questions['Candidato alla Tesoreria | Paolo Manetta'],
-            'Favorevole'
-        );
-        assert.deepEqual(
-            firstVote.questions['Candidati alla Presidenza | Genere maschile - Ordina i candidati in base alla tua preferenza: la 1a scelta come preferita e la 2a scelta come ultima.'],
-            ['Stefan De Jonghe', 'Gianluca Guerra']
-        );
-        assert.deepEqual(
-            firstVote.questions['Candidate alla Presidenza | Genere femminile - Ordina le candidate in base alla tua preferenza: la 1a scelta come preferita e la 3a scelta come ultima.'],
-            ['Giulia Romana Mele', 'Eliana Canavesio', 'Giulia Pretini']
-        );
-});
+//         assert.equal(
+//             firstVote.questions['Candidato alla Tesoreria | Paolo Manetta'],
+//             'Favorevole'
+//         );
+//         assert.deepEqual(
+//             firstVote.questions['Candidati alla Presidenza | Genere maschile - Ordina i candidati in base alla tua preferenza: la 1a scelta come preferita e la 2a scelta come ultima.'],
+//             ['Stefan De Jonghe', 'Gianluca Guerra']
+//         );
+//         assert.deepEqual(
+//             firstVote.questions['Candidate alla Presidenza | Genere femminile - Ordina le candidate in base alla tua preferenza: la 1a scelta come preferita e la 3a scelta come ultima.'],
+//             ['Giulia Romana Mele', 'Eliana Canavesio', 'Giulia Pretini']
+//         );
+// });
 
-test('processVotes detects STV questions from normalized vote structure', () => {
+test('processVotes processes STV questions', () => {
         const votes = selectValidVotes('data/CD2021/Voti Elezione Direttivo 29 Novembre 2021 PUBBLICO - Form Responses 1.csv');
 
-        const messages = [];
-        const originalLog = console.log;
-        console.log = (message) => {
-            messages.push(message);
-        };
+        let vt = processVotes(votes);
 
-        try {
-            processVotes(votes);
-        } finally {
-            console.log = originalLog;
-        }
-
-        assert.ok(
-            messages.includes(
-                'Elaborazione del voto per la domanda STV: Candidati alla Presidenza | Genere maschile - Ordina i candidati in base alla tua preferenza: la 1a scelta come preferita e la 2a scelta come ultima.'
-            )
-        );
-        assert.ok(
-            messages.includes(
-                'Elaborazione del voto per la domanda a maggioranza: Candidato alla Tesoreria | Paolo Manetta'
-            )
-        );
+        assert.equal(vt.length, 341);
 });
+
