@@ -126,7 +126,7 @@ function processVotesSTV(votes, question, num_seats = 1) {
 
     // compute quota for STV election
     const totalVotes = votes.length;
-    const quota = Math.floor(totalVotes / (num_seats + 1)) + 1; // Droop quota for single-winner STV
+    const quota = (totalVotes / (num_seats + 1)); // Droop quota for single-winner STV
     verbalize(`Quota da raggiungere : ${quota}`);
     // init candidates 
     let candidates = {};
@@ -145,6 +145,8 @@ function processVotesSTV(votes, question, num_seats = 1) {
             roundCounts[candidate] = 0;
         }
 
+        // console.log(`Length of preferences: ${preferences.length}`);
+        // console.log(`Sum of weights: ${preferences.map(c => c.weight).reduce((sum, w) => sum + w, 0)}`);
         // Assign vote to the candidates
         for (const preference of preferences) {
             const [weight, choice] = preference.get();
@@ -156,7 +158,7 @@ function processVotesSTV(votes, question, num_seats = 1) {
         for (const [candidate, candidatePreferences] of Object.entries(candidates)) {
             const totalWeight = candidatePreferences.reduce((sum, pref) => sum + pref.weight, 0);
             roundCounts[candidate] = totalWeight;
-            verbalize(`Candidato: ${candidate}, Voti: ${totalWeight}`);
+            verbalize(`Candidato: ${candidate}, Voti: ${(Math.round(totalWeight * 100) / 100).toFixed(2)}`);
         }
 
         // Check if any candidate has reached the quota
@@ -171,11 +173,11 @@ function processVotesSTV(votes, question, num_seats = 1) {
             // Remove elected candidates from the pool for the next round
             for (const elected of currentElectedCandidates) {
                 let overflow = roundCounts[elected] - quota;
-                verbalize(`- ${elected} con ${roundCounts[elected]} voti (+${overflow} sulla quota)`, true);
+                verbalize(`- ${elected} con ${roundCounts[elected]} voti (+${(Math.round(overflow * 100) / 100).toFixed(2)} sulla quota)`, true);
                 
                 // Redistribute the overflow votes to the next preferences
                 let redistributed = candidates[elected].forEach((preference) => {preference.redistribute(overflow/candidates[elected].length, electedCandidates)});
-                console.log(`Ridstribuiti ${candidates[elected].length} voti di ${elected} con peso totale ${candidates[elected].reduce((sum, pref) => sum + pref.weight, 0)}`);
+                verbalize(`Ridstribuiti ${candidates[elected].length} voti di ${elected} con peso totale ${candidates[elected].reduce((sum, pref) => sum + pref.weight, 0)}`, true);
 
                 delete candidates[elected];
             }
