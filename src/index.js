@@ -136,17 +136,21 @@ function processVotesSTV(votes, question, num_seats = 1) {
     verbalize(`Candidati iniziali : ${Object.keys(candidates).join(', ')}`);
     
     let electedCandidates = [];
-
     let preferences = votes.map((vote) => vote.questions[question]);
     for (let round = 1; round <= num_seats; round++) {
         verbalize(`\n--- Round ${round} ---`);
+        //reset candidate votes for this round
+        Object.keys(candidates).forEach((candidate) => {
+            candidates[candidate] = [];
+        });
+
         let roundCounts = {};
         for (const candidate of Object.keys(candidates)) {
             roundCounts[candidate] = 0;
         }
 
-        // console.log(`Length of preferences: ${preferences.length}`);
-        // console.log(`Sum of weights: ${preferences.map(c => c.weight).reduce((sum, w) => sum + w, 0)}`);
+        console.log(`Length of preferences: ${preferences.length}`);
+        console.log(`Sum of weights: ${preferences.map(c => c.weight).reduce((sum, w) => sum + w, 0)}`);
         // Assign vote to the candidates
         for (const preference of preferences) {
             const [weight, choice] = preference.get();
@@ -183,6 +187,21 @@ function processVotesSTV(votes, question, num_seats = 1) {
             }
         } else {
             verbalize('Nessun candidato ha raggiunto la quota in questo round.');
+            // Eliminate the candidate with the fewest votes
+            let minVotes = Math.min(...Object.values(roundCounts));
+            let candidatesWithMinVotes = Object.entries(roundCounts)
+                .filter(([_, count]) => count === minVotes)
+                .map(([candidate, _]) => candidate);
+
+            // If there's a tie for the fewest votes, eliminate one randomly
+            // TODO fix this randomly
+            let eliminatedCandidate = candidatesWithMinVotes[Math.floor(Math.random() * candidatesWithMinVotes.length)];
+            verbalize(`Candidato eliminato: ${eliminatedCandidate} con ${roundCounts[eliminatedCandidate]} voti`, true);
+            
+            // Redistribute the votes of the eliminated candidate
+            candidates[eliminatedCandidate].forEach((preference) => {preference.redistribute(1, electedCandidates)});
+
+            delete candidates[eliminatedCandidate];
         }
         if (electedCandidates.length >= num_seats) {
             verbalize(`Tutti i posti sono stati assegnati. Candidati eletti: ${electedCandidates.join(', ')}`);
