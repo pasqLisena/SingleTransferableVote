@@ -1,0 +1,166 @@
+:root {
+  --bg: #f6f6ef;
+  --surface: #fffdf7;
+  --ink: #1f1f1f;
+  --ink-soft: #545454;
+  --border: #d7d1c2;
+  --accent: #005f73;
+  --accent-soft: #e6f4f6;
+  --warn: #9b2226;
+  --radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 100% 0%, #d8f3dc 0, transparent 45%),
+    radial-gradient(circle at 0% 100%, #caf0f8 0, transparent 45%),
+    var(--bg);
+}
+
+.app {
+  width: min(980px, 94vw);
+  margin: 2rem auto;
+  display: grid;
+  gap: 1rem;
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.4vw, 2.3rem);
+}
+
+header p {
+  margin: 0.4rem 0 0;
+  color: var(--ink-soft);
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.panel h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.8rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.field span {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+input[type="file"],
+select,
+input[type="number"] {
+  padding: 0.45rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--ink);
+}
+
+.hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.config-editor.empty {
+  color: var(--ink-soft);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  padding: 0.5rem 0.35rem;
+  vertical-align: top;
+}
+
+th {
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.code {
+  font-family: "IBM Plex Mono", "SF Mono", monospace;
+  font-size: 0.84rem;
+  color: #0b3d4a;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+button {
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.55rem 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #9db0b4;
+  cursor: not-allowed;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink-soft);
+}
+
+pre {
+  margin: 0;
+  max-height: 50vh;
+  overflow: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #101419;
+  color: #ddf3f8;
+  padding: 0.8rem;
+  font-family: "IBM Plex Mono", "SF Mono", monospace;
+  font-size: 0.86rem;
+  line-height: 1.4;
+}
+
+.error {
+  color: var(--warn);
+  font-weight: 600;
+}

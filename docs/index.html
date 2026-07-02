@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STV Vote Processor</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header>
+        <h1>STV Vote Processor</h1>
+        <p>
+          Upload a vote file (CSV or XLSX) and an optional token file, validate the auto-detected
+          configuration, then process votes.
+        </p>
+      </header>
+
+      <section class="panel">
+        <h2>1. Input files</h2>
+        <div class="field-grid">
+          <label class="field">
+            <span>Votes file (required)</span>
+            <input id="votesFile" type="file" accept=".csv,.xlsx" />
+          </label>
+          <label class="field">
+            <span>Token file (optional)</span>
+            <input id="tokensFile" type="file" accept=".csv,.txt" />
+          </label>
+        </div>
+        <p id="inputSummary" class="hint"></p>
+      </section>
+
+      <section class="panel">
+        <h2>2. Auto configuration</h2>
+        <p class="hint">
+          The app proposes token/timestamp columns and question types. You can adjust question type
+          (STV or FPTP) and seat count before processing.
+        </p>
+        <div id="configEditor" class="config-editor empty">Upload a votes file to generate config.</div>
+      </section>
+
+      <section class="panel actions">
+        <h2>3. Process</h2>
+        <button id="processButton" disabled>Process votes</button>
+        <label class="checkbox">
+          <input id="hideVerbose" type="checkbox" />
+          Hide verbose messages
+        </label>
+      </section>
+
+      <section class="panel">
+        <h2>Output</h2>
+        <pre id="output">Waiting for input...</pre>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
