@@ -78,6 +78,7 @@ function renderConfigEditor() {
     const typeCell = document.createElement('td');
     const typeSelect = document.createElement('select');
     typeSelect.innerHTML = `
+      <option value="DISABLED">Disabled</option>
       <option value="FPTP">FPTP</option>
       <option value="STV">STV</option>
     `;

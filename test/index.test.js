@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { importVotes, selectValidVotes, processVotes } from '../src/index.js';
+import { proposeConfig, parseVotes } from '../src/webAppHelpers.js';
 
 const TOKEN_FILE = 'data/Milano/MilanoToken.csv';
 const VOTE_FILE = 'data/Milano/Elezioni City Lead Milano (Responses).xlsx';
@@ -62,5 +63,25 @@ test('processVotes processes STV questions', () => {
         let vt = processVotes(votes);
 
         assert.equal(vt.length, 341);
+});
+
+test('parseVotes skips questions marked as disabled', () => {
+        const rows = [
+                {
+                        timestamp: '2026-01-01 10:00:00',
+                        Token: 'token-1',
+                        'Domanda FPTP': 'Alice',
+                        'Domanda STV [Bob]': '1',
+                        'Domanda STV [Carol]': '2',
+                },
+        ];
+
+        const config = proposeConfig(rows);
+        config.questions.find((question) => question.text === 'Domanda FPTP').type = 'DISABLED';
+
+        const votes = parseVotes(rows, config);
+
+        assert.equal(votes.length, 1);
+        assert.deepEqual(Object.keys(votes[0].questions), ['Domanda STV']);
 });
 

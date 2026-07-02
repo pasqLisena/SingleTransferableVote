@@ -95,6 +95,10 @@ function parseVotes(rows, config) {
         const vote = new Vote(token, timestamp);
 
         for (const question of config.questions) {
+            if (question.type === 'DISABLED') {
+                continue;
+            }
+
             if (question.type === 'FPTP') {
                 const firstAnswer = question.columns
                     .map((column) => String(row[column.key] || '').trim())
