@@ -1,4 +1,5 @@
 import STVote from './STVote.js';
+import { timestampToDate } from './utils.js';
 
 const TOKEN_FORMAT_REGEX = /^[A-Za-z0-9_-]{43}$/;
 
@@ -10,6 +11,13 @@ function selectValidVotesFromVotes(votes, options = {}) {
     } = options;
 
     const sortedVotes = [...votes].sort((a, b) => a.timestamp - b.timestamp);
+
+    verbalize(
+        `Primo voto ricevuto il: ${sortedVotes[0] ? timestampToDate(sortedVotes[0].timestamp).toISOString() : 'timestamp non disponibile'}`, true
+    );
+    verbalize(`Ultimo voto ricevuto il: ${sortedVotes[sortedVotes.length - 1] ? timestampToDate(sortedVotes[sortedVotes.length - 1].timestamp).toISOString()
+        : 'timestamp non disponibile'}`, true);
+
 
     if (tokenSet) {
         verbalize(`Aventi diritto al voto (token generati): ${tokenSet.size}`);
@@ -90,7 +98,7 @@ function processVotesSTV(votes, question, numSeats, verbalize) {
     let electedCandidates = [];
     const preferences = votes.map((vote) => vote.questions[question]);
 
-    for (let round = 1; round <= numSeats; round += 1) {
+    for (let round = 1; round <= 100; round += 1) {
         verbalize(`\n--- Round ${round} ---`);
 
         Object.keys(candidates).forEach((candidate) => {
@@ -127,7 +135,7 @@ function processVotesSTV(votes, question, numSeats, verbalize) {
 
             for (const elected of currentElectedCandidates) {
                 const overflow = roundCounts[elected] - quota;
-                verbalize(`- ${elected} con ${roundCounts[elected]} voti (+${(Math.round(overflow * 100) / 100).toFixed(2)} sulla quota)`, true);
+                verbalize(`- ${elected} con ${roundCounts[elected]} voti (+${(Math.round(overflow * 100) / 100).toFixed(2)} sulla quota)`);
 
                 candidates[elected].forEach((preference) => {
                     preference.redistribute(overflow / Math.max(candidates[elected].length, 1), electedCandidates);
@@ -149,7 +157,7 @@ function processVotesSTV(votes, question, numSeats, verbalize) {
                 .map(([candidate]) => candidate);
 
             const eliminatedCandidate = candidatesWithMinVotes[Math.floor(Math.random() * candidatesWithMinVotes.length)];
-            verbalize(`Candidato eliminato: ${eliminatedCandidate} con ${roundCounts[eliminatedCandidate]} voti`, true);
+            verbalize(`Candidato eliminato: ${eliminatedCandidate} con ${roundCounts[eliminatedCandidate]} voti`);
 
             candidates[eliminatedCandidate].forEach((preference) => {
                 preference.redistribute(1, electedCandidates);
