@@ -4,27 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>STV Vote Processor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <main class="app">
-      <header>
+      <header class="hero">
         <h1>STV Vote Processor</h1>
-        <p>
-          Upload a vote file (CSV or XLSX) and an optional token file, validate the auto-detected
-          configuration, then process votes.
+        <p class="hero-copy">
+          Upload a vote file (CSV or XLSX), optionally add tokens, review auto-detected rules, and
+          process the election in one pass.
         </p>
       </header>
 
       <section class="panel">
-        <h2>1. Input files</h2>
+        <h2><span class="step">1</span>Input files</h2>
         <div class="field-grid">
           <label class="field">
-            <span>Votes file (required)</span>
+            <span>Votes file (required, csv or xlsx)</span>
             <input id="votesFile" type="file" accept=".csv,.xlsx" />
           </label>
           <label class="field">
-            <span>Token file (optional)</span>
+            <span>Token file (optional, csv or txt)</span>
             <input id="tokensFile" type="file" accept=".csv,.txt" />
           </label>
         </div>
@@ -32,7 +38,7 @@
       </section>
 
       <section class="panel">
-        <h2>2. Auto configuration</h2>
+        <h2><span class="step">2</span>Auto configuration</h2>
         <p class="hint">
           The app proposes token/timestamp columns and question types. You can adjust question type
           (STV or FPTP) and seat count before processing.
@@ -41,7 +47,7 @@
       </section>
 
       <section class="panel actions">
-        <h2>3. Process</h2>
+        <h2><span class="step">3</span>Process</h2>
         <button id="processButton" disabled>Process votes</button>
         <label class="checkbox">
           <input id="hideVerbose" type="checkbox" />
@@ -53,6 +59,8 @@
         <h2>Output</h2>
         <pre id="output">Waiting for input...</pre>
       </section>
+
+      <footer class="footer-note">Free and open-source software available on <a href="https://github.com/pasqLisena/SingleTransferableVote">GitHub</a>.</footer>
     </main>
 
     <script type="module" src="./app.js"></script>
