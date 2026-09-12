@@ -1,6 +1,6 @@
 import * as xlsx from 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/+esm';
-import { selectValidVotesFromVotes, processVotes as processVotesShared } from './src/processing.js';
-import { guessSeatCount, proposeConfig, parseVotes } from './src/webAppHelpers.js';
+import { selectValidVotesFromVotes, processVotes as processVotesShared } from '../src/processing.js';
+import { guessSeatCount, proposeConfig, parseVotes } from '../src/webAppHelpers.js';
 
 const state = {
   rows: [],
